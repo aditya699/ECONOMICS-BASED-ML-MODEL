@@ -1,0 +1,164 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+# HETROSCADICITY
+data=read.csv(file.choose())
+head(data)
+```
+
+```{r}
+data_1=read.csv(file.choose())
+head(data_1)
+```
+
+```{r}
+library(dplyr)
+data$X=NULL
+data_1$X=NULL
+
+
+```
+
+```{r}
+head(data)
+```
+
+```{r}
+model_1=lm(data$Life.Ladder~.,data=data)
+```
+
+```{r}
+summary(model_1)
+```
+```{r}
+PackageNames <- c("tidyverse", "stargazer", "magrittr", "lmtest", "sandwich")
+for(i in PackageNames){
+  if(!require(i, character.only = T)){
+    install.packages(i, dependencies = T)
+    require(i, character.only = T)
+  }
+}
+
+```
+
+```{r}
+# // GRAPHICAL METHOD 
+par(mfrow=c(2,2)) # init 4 charts in 1 panel
+plot(model_1)
+```
+```{r}
+# so here you can see in the first picture a almost flat line(NOT FULLY ) was obtained so prima facie our data doesn't suffer from hetoscadicity
+
+```
+
+```{r}
+# LETS RUN A GRAPHICAL ANALYSIS ON THE TRANSOFORMED DATA
+model_2=lm(data_1$Life.Ladder~.,data=data_1)
+par(mfrow=c(2,2)) # init 4 charts in 1 panel
+plot(model_2)
+
+```
+```{r}
+# IN THE TRANSFORMED DATA YOU CAN SEE THAT ALMOST A FINE LINE IS OBTAINED
+
+
+```
+
+```{r}
+# NOW LETS APPLY Breush-Pagan test TO THE DATASET
+lmtest::bptest(model_1)  # Breusch-Pagan test
+
+```
+
+```{r}
+lmtest::bptest(model_2)
+```
+```{r}
+car::ncvTest(model_1)
+```
+
+
+```{r}
+car::ncvTest(model_2)
+```
+
+```{r}
+# VERY INTRESTING OBSERVATION COMING OUR WAY THAT THE GRAPH AND THE TWO TESTS GIVE DISTINCT RESULTS
+
+```
+
+```{r}
+# now let's just take 2 features one economical and other non economical
+
+```
+
+```{r}
+data$Social.support=NULL
+data$Healthy.life.expectancy.at.birth=NULL
+data$Freedom.to.make.life.choices=NULL
+data$Generosity=NULL
+```
+
+```{r}
+head(data)
+```
+
+```{r}
+model_1=lm(data$Life.Ladder~.,data=data)
+```
+
+```{r}
+summary(model_1)
+```
+
+```{r}
+par(mfrow=c(2,2)) # init 4 charts in 1 panel
+plot(model_1)
+```
+
+
+```{r}
+lmtest::bptest(model_1)
+```
+
+```{r}
+car::ncvTest(model_1)
+
+```
+
+```{r}
+# OK SO NCV TEST AND Breusch-Pagan test ARE GIVING CONTRADICTORY RESULTS
+# BUT SEEING THE GRAPH WHERE WE CAN SEE THE RED LINE IS ALMOST STRAIGT AND THEREFORE NO HETROSCADICITY IS CONFIRMED
+ 
+```
+
+```{r}
+# THIS IS REASON WHILE DEPLOYMENT WE JUST CHOSE A ECONOMIC AND A NON ECONOMIC VARIABLE 
+# 1. NO HETROSCADICTY
+# 2. NO MULTICOLLINEARITY
+# 3. EASY FOR USER OF THE APPLICATION
+```
+
+```{r}
+
+model_2=lm(data_1$Life.Ladder~.,data=data_1)
+par(mfrow=c(2,2)) # init 4 charts in 1 panel
+plot(model_2)
+```
+```{r}
+car::ncvTest(model_2)
+```
+```{r}
+# SO THERE IS HETROSCADCITY IN THE TRANSFORMED DATASET SO  WE ALL THE RECALL THE STATEMENT -
+# REMIDY IS DANGEROUS THAN THEN CURE 
+# IN ORDER TO GET NORMALITY OUR TRANSFORMED DATA SET HAS HETROSCEDICITY
+# SO THAT IS WHY THE THE TRANSOFORMED FEATURES WEREN;T USED IN THE FINAL FEATURES MOREOVER I PERSONALLY FELL OVER TRASNFORMATIONS MIGHT NOT BE GREAT IN BUSSINESS SENSE SINCE THEIR INTERPRETABLITY IS LOW
+```
+

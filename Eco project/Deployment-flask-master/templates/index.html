@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html >
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<head>
+  <meta charset="UTF-8">
+  <title>ML API</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+   <style>
+      input {
+        width: 90%;
+        padding: 10px;
+        margin: 5px;
+        outline: none;
+      }
+      input[type="submit"] {
+        width: 150px;
+      }
+      input::placeholder {
+        color: 	#000000;
+        opacity: 1;
+      }
+      input:placeholder-shown {
+        border: 1px solid #095484;
+      }
+    </style>
+</head>
+
+<body bgcolor=#d4a3ae>
+<font color="blue">
+ <img src="static\6.PNG" alt="KNOW ABOUT THE APP">
+ <center>
+ <div class="login">
+
+
+	<h1 style="color:red;">PREDICT LADDER SCORE</h1>
+
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post">
+    	<input type="text" name="experience" placeholder="LOG OF GDP" required="required" />
+        <input type="text" name="test_score" placeholder="PERCEPTION OF CORRUPTION" required="required" />
+        <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
+    </form>
+   {{ prediction_text }}
+
+ </div>
+
+ </center>
+    </font>
+</body>
+</html>
